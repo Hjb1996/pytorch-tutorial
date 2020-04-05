@@ -1,7 +1,11 @@
-import torch
-import torch.nn as nn
-import torchvision
-import torchvision.transforms as transforms
+import torch #张量相关的运算，例如创建、索引、切片、连接、转置、加减乘除等
+import torch.nn as nn #包含搭建网络层的模块（Modules）和一系列的loss函数，例如全连接、卷积、池化、BN批处理、dropout、CrossEntropyLoss、MSELoss等
+import torchvision  #torchvision.datasets：常用数据集，MNIST、COCO、CIFAR10、Imagenet等 ----图像数据集
+import torchvision.transforms as transforms #图片相关处理，裁剪、尺寸缩放、归一化等
+# ===文本数据集
+import torchtext #文本数据集
+from torchtext import data    #data.BucketIterator 等这里也有迭代器
+from torchtext import datasets
 
 
 # Device configuration
@@ -15,22 +19,22 @@ num_epochs = 5
 batch_size = 100
 learning_rate = 0.001
 
-# MNIST dataset 
-train_dataset = torchvision.datasets.MNIST(root='../../data', 
-                                           train=True, 
-                                           transform=transforms.ToTensor(),  
+# MNIST dataset
+train_dataset = torchvision.datasets.MNIST(root='../../data',
+                                           train=True,
+                                           transform=transforms.ToTensor(),
                                            download=True)
 
 test_dataset = torchvision.datasets.MNIST(root='../../data', 
                                           train=False, 
                                           transform=transforms.ToTensor())
 
-# Data loader
+# Data loader 迭代器
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset, 
                                            batch_size=batch_size, 
                                            shuffle=True)
 
-test_loader = torch.utils.data.DataLoader(dataset=test_dataset, 
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=batch_size, 
                                           shuffle=False)
 
