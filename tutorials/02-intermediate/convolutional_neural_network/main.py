@@ -49,10 +49,10 @@ class ConvNet(nn.Module):
         self.fc = nn.Linear(7*7*32, num_classes)
         
     def forward(self, x):
-        out = self.layer1(x)
-        out = self.layer2(out)
-        out = out.reshape(out.size(0), -1)
-        out = self.fc(out)
+        out = self.layer1(x) #torch.Size([100, 16, 14, 14])
+        out = self.layer2(out)  #torch.Size([100, 32, 7, 7])
+        out = out.reshape(out.size(0), -1) #torch.Size([100, 1568])
+        out = self.fc(out)#torch.Size([100, 10])
         return out
 
 model = ConvNet(num_classes).to(device)
