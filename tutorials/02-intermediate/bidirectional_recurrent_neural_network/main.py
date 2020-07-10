@@ -47,7 +47,7 @@ class BiRNN(nn.Module):
     
     def forward(self, x):
         # Set initial states
-        h0 = torch.zeros(self.num_layers*2, x.size(0), self.hidden_size).to(device) # 2 for bidirection 
+        h0 = torch.zeros(self.num_layers*2, x.size(0), self.hidden_size).to(device) # 2 for bidirection ; [layers,batch_size,hidden_size]  num_layers * num_directions, batch, hidden_size
         c0 = torch.zeros(self.num_layers*2, x.size(0), self.hidden_size).to(device)
         
         # Forward propagate LSTM

@@ -19,21 +19,21 @@ learning_rate = 0.01
 
 # MNIST dataset
 train_dataset = torchvision.datasets.MNIST(root='../../data/',
-                                           train=True, 
+                                           train=True,
                                            transform=transforms.ToTensor(),
                                            download=True)
 
 test_dataset = torchvision.datasets.MNIST(root='../../data/',
-                                          train=False, 
+                                          train=False,
                                           transform=transforms.ToTensor())
 
 # Data loader
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
-                                           batch_size=batch_size, 
+                                           batch_size=batch_size,
                                            shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
-                                          batch_size=batch_size, 
+                                          batch_size=batch_size,
                                           shuffle=False)
 
 # Recurrent neural network (many-to-one)
@@ -47,14 +47,14 @@ class RNN(nn.Module):
     
     def forward(self, x):
         # Set initial hidden and cell states 
-        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(device) 
-        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(device)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(device)  #[2, 100, 128]) [layers,batch_size,hidden_size]  num_layers * num_directions, batch, hidden_size
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(device) #[2, 100, 128]) [layers,batch_size,hidden_size]
         
         # Forward propagate LSTM
-        out, _ = self.lstm(x, (h0, c0))  # out: tensor of shape (batch_size, seq_length, hidden_size)
+        out, _ = self.lstm(x, (h0, c0))  # out: tensor of shape (batch_size, seq_length, hidden_size) torch.Size([100, 28, 128])
         
         # Decode the hidden state of the last time step
-        out = self.fc(out[:, -1, :])
+        out = self.fc(out[:, -1, :]) # ([100, 10])   [batch, classes]
         return out
 
 model = RNN(input_size, hidden_size, num_layers, num_classes).to(device)
